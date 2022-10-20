@@ -11,17 +11,29 @@ def make_arguments():
     parser.add_argument('--target', type=str, required=True)
     parser.add_argument('--start', type=int, default=0)
     parser.add_argument('--stop', type=int, default=100)
+    parser.add_argument('--full', nargs='?', const='')
     return parser.parse_args()
 
 def make_filename(args: ArgumentParser):
-    filename = f"{args.target}_({args.start}-{args.stop}).csv"
+    if args.full == None:
+        filename = f"{args.target}_({args.start}-{args.stop}).csv"
+        print(f"settings: target: {args.target}, interval: [{args.start}, {args.stop}]")
+    else:
+        filename = f"{args.target}_full.csv"
+        print(f"settings: target: {args.target}, full extraction")
+    print(f"--> pointing to {filename}")
     return filename
 
 def extract(loader, args):
-    data = loader.get_by_number(args.target, start=args.start, stop=args.stop)
+    print(f"--> extracting from @{args.target}")
+    if args.full == None:
+        data = loader.get_by_number(args.target, start=args.start, stop=args.stop)
+    else:
+        data = loader.get_full(args.target)
     return data
 
 def save(data, file):
+    print(f"--> saving {file}")
     frame = pd.DataFrame({
         "user": list(map(lambda t: t._json['user']['screen_name'], data)),
         "text": list(map(lambda t: t._json['full_text'], data)),
@@ -33,6 +45,9 @@ def save(data, file):
 
 if __name__ == "__main__":
     args = make_arguments()
+    print(args)
+    if args.full != None:
+        print("yes")
     name = make_filename(args)
     
     loader = TweetParser(

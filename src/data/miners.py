@@ -40,7 +40,6 @@ class TweetParser:
   def get_full(self, target: str): 
     tweet_it = Cursor(
       self.api.user_timeline, 
-      self.api.mentions_timeline, 
       screen_name=target,
       tweet_mode="extended", 
       include_rts = False,

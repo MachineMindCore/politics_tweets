@@ -1,0 +1,7 @@
+!/.gitignore
+venv/
+
+# Bytes-compile
+__pycache__/
+*.py[cod]
+*$py.class
