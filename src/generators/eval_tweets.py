@@ -37,6 +37,7 @@ def save_data(data, file):
 if __name__ == "__main__":
     args = make_arguments()
     if args.all == None:
+        print(args.file)
         path = f"data/{args.group}/{args.file}"
         data = load_data(path)
         evaluated = eval_data(data, args, args.file)

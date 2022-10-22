@@ -8,7 +8,7 @@ class SentimentSetAnalizer:
     
     MODEL_TAG = {
         "spanish_DANE": "Recognai/bert-base-spanish-wwm-cased-xnli",
-        "multi_DANE": "vicgalle/xlm-roberta-large-xnli-anli",
+        "roberta": "vicgalle/xlm-roberta-large-xnli-anli",
     }
 
     def __init__(self, tag, device):

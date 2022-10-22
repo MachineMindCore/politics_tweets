@@ -3,6 +3,7 @@ sys.path.append(os.path.join(sys.path[0],'..','..'))
 
 import pandas as pd
 from config import guest
+from src.helpers.handle import remove_url
 from src.data.miners import TweetParser
 from argparse import ArgumentParser
 
@@ -36,7 +37,7 @@ def save(data, file):
     print(f"--> saving {file}")
     frame = pd.DataFrame({
         "user": list(map(lambda t: t._json['user']['screen_name'], data)),
-        "text": list(map(lambda t: t._json['full_text'], data)),
+        "text": list(map(lambda t: remove_url(t._json['full_text']), data)),
         "date": list(map(lambda t: t._json['created_at'], data)),
     })
     frame.to_csv(f"data/raw/{file}")
