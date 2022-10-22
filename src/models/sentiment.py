@@ -1,42 +1,51 @@
-import json
-import numpy as np
 import pandas as pd
-from dateparser import parse
 from tqdm.notebook import tqdm
 
 import torch
-from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification, BertTokenizerFast
+from transformers import pipeline
 
-tqdm.pandas()
-torch.cuda.empty_cache()
+class SentimentSetAnalizer:
+    
+    MODEL_TAG = {
+        "spanish_DANE": "Recognai/bert-base-spanish-wwm-cased-xnli",
+        "multi_DANE": "vicgalle/xlm-roberta-large-xnli-anli",
+    }
 
-# Cargue el modelo zero shot en español 
- 
-zero_shot_classifier = pipeline("zero-shot-classification", model = "Recognai/bert-base-spanish-wwm-cased-xnli", device = "cpu")
+    def __init__(self, tag, device):
+        tqdm.pandas()
+        torch.cuda.empty_cache()
+        self.zero_shot_classifier = pipeline(
+            "zero-shot-classification",
+            model = self.MODEL_TAG[tag],
+            device = device,
+        )
+        return
+    
+    # Methods
+    # Single text analizer
+    def expand_sentiment(self, data, col_target, labels):
+        expansion = pd.DataFrame(columns=labels)
+        for text in data[col_target]:
+            values = self.eval_sentiment(text,labels)
+            chip = pd.DataFrame(columns=values["labels"], data=[values["scores"]])
+            expansion = pd.concat([expansion, chip], axis='rows')
+        expansion.reset_index(inplace=True, drop=True)
+        print(expansion)
+        data = pd.concat([data, expansion], axis='columns')
+        return data
 
-# Aquí puede cargar el modelo multilingue. Los modelos arrojan resultados diferentes. Revise cuál le resulta más útil. 
+    def eval_sentiment(self, text, zero_shot_labels):
+        if type(text) == str:      
+            classification = self.zero_shot_classifier(
+                text, 
+                candidate_labels = zero_shot_labels, 
+                multi_label = False
+            )
+            return classification
+        return
 
-#zero_shot_classifier = pipeline("zero-shot-classification", model = "vicgalle/xlm-roberta-large-xnli-anli",
-#                                  device = 0)
-
-def sentiment_topic_analysis(text, zero_shot_classifier, zero_shot_labels): 
-
-    if type(text) == str:
-                
-        topic = zero_shot_classifier(text, candidate_labels = zero_shot_labels, multi_label = False) 
-        
-        topic_df = pd.DataFrame([topic['scores']], columns = topic['labels'])
-              
-        topic_df['text'] = text
-        
-        return topic_df
-        
-    else:
-        
-        return None
-
+""" 
 data = pd.read_csv('SUSDATOS.csv', index_col = 0).reset_index().dropna(subset = ['SUCOLUMNADEINTERES'])
-
 dfs = []
 for index in tqdm(np.arange(data.shape[0])): 
 
@@ -68,3 +77,5 @@ post_sentiment['Max'] = post_sentiment[['ETIQUETA1',
                                         'ETIQUETA2']].idxmax(axis = 1) 
 post_sentiment_discrimination = post_sentiment[post_sentiment['Max'] == 'ETIQUETA1'].sort_values('ETIQUETA1', ascending = False)
 post_sentiment_representativity = post_sentiment[post_sentiment['Max'] == 'ETIQUETA1'].sort_values('ETIQUETA1', ascending = False)
+
+"""
