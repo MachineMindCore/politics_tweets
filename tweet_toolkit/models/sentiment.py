@@ -40,8 +40,12 @@ class SentimentSetAnalizer:
                 candidate_labels = zero_shot_labels, 
                 multi_label = False
             )
-            return classification
-        return
+        else:
+            classification = {
+                "labels": zero_shot_labels,
+                "scores": [0]*len(zero_shot_labels),
+            }
+        return classification
 
 """ 
 data = pd.read_csv('SUSDATOS.csv', index_col = 0).reset_index().dropna(subset = ['SUCOLUMNADEINTERES'])

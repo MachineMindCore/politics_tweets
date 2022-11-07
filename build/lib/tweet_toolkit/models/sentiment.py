@@ -27,11 +27,9 @@ class SentimentSetAnalizer:
         expansion = pd.DataFrame(columns=labels)
         for text in data[col_target]:
             values = self.eval_sentiment(text,labels)
-            chip = pd.DataFrame(columns=values["labels"], data=[values["scores"]], index=expansion.index)
-            print(expansion)
-            print(values)
+            chip = pd.DataFrame(columns=values["labels"], data=[values["scores"]])
             expansion = pd.concat([expansion, chip], axis='rows')
-        #expansion.reset_index(inplace=True, drop=True)
+        expansion.set_index(data.index, inplace=True)
         data = pd.concat([data, expansion], axis='columns')
         return data
 
