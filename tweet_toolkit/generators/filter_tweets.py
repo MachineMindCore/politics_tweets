@@ -4,6 +4,7 @@ sys.path.append(os.path.join(sys.path[0],'..','..'))
 import pandas as pd
 from datetime import datetime as dt
 from argparse import ArgumentParser
+from tweet_toolkit.helpers.handle import date_hours
 
 def make_arguments():
     parser = ArgumentParser(description="tweets filter pipeline")
@@ -43,10 +44,10 @@ def filter_data(data: pd.DataFrame, args):
         data.dropna(inplace=True)
     if args.date != []:
         print("01-01-2022" == args.date[0])
-        minor_limit = dt.strptime(args.date[0], "%d-%m-%Y")
-        max_limit = dt.strptime(args.date[1], "%d-%m-%Y")
+        minor_limit = date_hours(dt.strptime(args.date[0], "%d-%m-%Y"))
+        max_limit = date_hours(dt.strptime(args.date[1], "%d-%m-%Y"))
         data["date"] = pd.to_datetime(data["date"])
-        data = data[(data['date'] >= minor_limit) & (data['date'] <= max_limit)]
+        data = data[(data['date'].apply(date_hours) >= minor_limit) & (data['date'].apply(date_hours) <= max_limit)]
     return data
 
 def save(data, file):
