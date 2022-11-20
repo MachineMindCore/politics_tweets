@@ -52,7 +52,7 @@ def filter_data(data: pd.DataFrame, args):
 
 def save(data, file):
     print(f"--> saving {file}")
-    data.to_csv(f"data/processed/{file}")
+    data.to_csv(f"data/processed/{file}") 
     return
 
 
