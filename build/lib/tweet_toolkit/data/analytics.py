@@ -16,35 +16,55 @@ import textacy.preprocessing.remove as remv
 class FrecuencyPlot:
 
     @staticmethod
-    def general_distribution(data, targets=None):
+    def general_distribution(data, catch=10, reference="text", targets=None, exclusion=[]):
+        register = FrecuencyPlot.extract_text(data, reference, targets=targets, exclusion=exclusion)
+        register = dict(islice(register.items(), catch))
+        for k in register.keys():
+            plt.bar(k, register[k], color="black", width=0.5)
+        plt.xticks(rotation=-90)
+        plt.show()
+        return register
+
+    
+    @staticmethod
+    def group_distribution(data, groups, reference="text"):
+        register = FrecuencyPlot.extract_text(data, reference)
+        acummulation = dict(zip(groups.keys(), [0]*len(groups.keys())))
+        for k in register.keys():
+            for label in groups.keys():
+                if k in groups[label]:
+                    acummulation[label] += register[k]
+        
+        f, ax = plt.subplots()
+        for k in acummulation.keys():
+            ax.bar(k, acummulation[k], color="black", width=0.5)
+        ax.set_xlim(-1,len(acummulation.keys()))
+        plt.xticks(rotation=-90)
+        plt.show()     
+        return acummulation
+
+    @staticmethod
+    def extract_text(data, reference, clean=True, targets=None, exclusion=[]):
         lemmatizer = WordNetLemmatizer()
         transformation = []
-        trash_words = stopwords.words('spanish')
-        trash_words.append('')
-        trash_words.append(' ')
-        for raw in data["text"]:
+        for raw in data[reference]:
             tweet = norm.whitespace(remv.punctuation(raw))
             if (targets == None) or (True in [target in tweet for target in targets]):
                 for word in tweet.split(" "):
                     transformation.append(lemmatizer.lemmatize(word))
         register = Counter(transformation)
-
-        filtered = {}
-        for k in register.keys():
-            if k not in trash_words:
-                filtered[k] = register[k]
         
-        ordered = sorted(filtered.items(), key=lambda item: item[1], reverse=True)
-        for items in ordered[:10]:
-            plt.bar(items[0], items[1], color="black", width=0.5)
-        plt.xticks(rotation=90)
-        plt.show()
-        return dict(ordered[:10])
-
-    
-    @staticmethod
-    def set_distribution():
-        return
+        if clean:
+            trash_words = stopwords.words('spanish')
+            trash_words.append(['', ' '])
+            trash_words.append(exclusion)
+            filtered = {}
+            for k in register.keys():
+                if k not in trash_words:
+                    filtered[k] = register[k]
+            filtered = dict(sorted(filtered.items(), key=lambda item: item[1], reverse=True))
+            register = filtered
+        return register
 
 class TimeLapsePlot:
 
