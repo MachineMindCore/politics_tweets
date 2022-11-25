@@ -16,12 +16,12 @@ import textacy.preprocessing.remove as remv
 class FrecuencyPlot:
 
     @staticmethod
-    def general_distribution(data, targets=None):
+    def general_distribution(data, catch=10, targets=None, exclusion=[]):
         lemmatizer = WordNetLemmatizer()
         transformation = []
         trash_words = stopwords.words('spanish')
-        trash_words.append('')
-        trash_words.append(' ')
+        trash_words.append(['', ' '])
+        trash_words.append(exclusion)
         for raw in data["text"]:
             tweet = norm.whitespace(remv.punctuation(raw))
             if (targets == None) or (True in [target in tweet for target in targets]):
@@ -35,7 +35,7 @@ class FrecuencyPlot:
                 filtered[k] = register[k]
         
         ordered = sorted(filtered.items(), key=lambda item: item[1], reverse=True)
-        for items in ordered[:10]:
+        for items in ordered[:catch]:
             plt.bar(items[0], items[1], color="black", width=0.5)
         plt.xticks(rotation=90)
         plt.show()

@@ -39,7 +39,7 @@ class FrecuencyPlot:
             plt.bar(items[0], items[1], color="black", width=0.5)
         plt.xticks(rotation=90)
         plt.show()
-        return 
+        return dict(ordered[:10])
 
     
     @staticmethod
