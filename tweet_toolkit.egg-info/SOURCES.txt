@@ -1,6 +1,7 @@
 LICENSE
 README.md
 setup.py
+test/testing.py
 tweet_toolkit/__init__.py
 tweet_toolkit.egg-info/PKG-INFO
 tweet_toolkit.egg-info/SOURCES.txt

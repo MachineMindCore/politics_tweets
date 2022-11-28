@@ -23,7 +23,6 @@ class FrecuencyPlot:
             plt.bar(k, register[k], color="black", width=0.5)
         plt.grid()
         plt.xticks(rotation=-90)
-        plt.title(f"Palabras más usadas {FrecuencyHandle.extract_users(data)}")
         plt.show()
         return register
 
@@ -43,34 +42,8 @@ class FrecuencyPlot:
         ax.set_xlim(-1,len(acummulation.keys()))
         plt.grid()
         plt.xticks(rotation=-90)
-        plt.title(f"Palabras más usadas agrupadas {FrecuencyHandle.extract_users(data)}")
         plt.show()     
         return acummulation
-
-    @staticmethod
-    def general_evaluation(data, labels):
-        acummulation = dict(zip(labels, [0]*len(labels)))
-        subsection = data[labels]
-
-        for i in range(data.shape[0]):
-            category, _ = FrecuencyHandle.eval_classification(subsection, i)
-            if category != None:
-                acummulation[category] += 1
-        
-        width = 0.5  # the width of the bars
-        x = np.arange(len(labels)) # the label locations
-        fig, ax = plt.subplots()
-        ax.grid(axis="y")
-        for k in acummulation.keys():
-            ax.bar(k, acummulation[k], width=width, label=k)
-        ax.set_xticks(x)
-        ax.set_xticklabels(labels)
-        plt.title(f"Conteo de etiquetas: {FrecuencyHandle.extract_labels(labels)} {FrecuencyHandle.extract_users(data)}")
-        ax.legend()
-        plt.show()
-        return acummulation
-            
-            
 
     @staticmethod
     def group_evaluation(data, groups, labels, reference="text"):            
@@ -99,19 +72,13 @@ class FrecuencyPlot:
                 i = -i+1
         ax.set_xticks(x)
         ax.set_xticklabels(groups.keys())
-        plt.title(f"Conteo de etiquetas agrupadas: {FrecuencyHandle.extract_labels(labels)} {FrecuencyHandle.extract_users(data)}")
         ax.legend()
         plt.show()
         return acummulation
     
     @staticmethod
-    def label_correlation(data, labels, visible=False):
-        subsection = data[labels]
-        corr_mat = subsection.corr()
-        corr_mat.style.background_gradient(cmap='coolwarm').format(precision=2)
-        if visible:
-            print(corr_mat)
-        return corr_mat
+    def group_correlation(data):
+        return
 
 class FrecuencyHandle:
     
@@ -168,19 +135,6 @@ class FrecuencyHandle:
             register = filtered
         
         return register
-
-    def extract_users(data, reference="user"):
-        users = set(data[reference])
-        name = ""
-        for user in users:
-            name += f"-{user}"
-        return name
-    
-    def extract_labels(labels):
-        name = ""
-        for label in labels:
-            name += f"-{label}"
-        return name
     
 
     @staticmethod
