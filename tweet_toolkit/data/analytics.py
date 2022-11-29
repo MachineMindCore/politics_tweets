@@ -83,7 +83,7 @@ class FrecuencyPlot:
                     for index in register[key][1]:
                         category, _ = FrecuencyHandle.eval_classification(data[labels], index)
                         if category != None:
-                            acummulation[key][category] += 1
+                            acummulation[g_key][category] += 1
 
         width = 0.1  # the width of the bars
         x = np.arange(len(groups.keys()))*(1.5*width*len(groups.keys())) # the label locations
