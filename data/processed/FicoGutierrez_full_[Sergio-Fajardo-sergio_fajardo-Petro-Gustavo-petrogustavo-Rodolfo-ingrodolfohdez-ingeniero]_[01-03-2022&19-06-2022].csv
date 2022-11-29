@@ -1,4 +1,4 @@
-id,user,text,date,bueno,malo,grosero,amable,cortes,descortés,agresivo,pasivo,neutral,match
+id,user,text,date,bueno,malo,grosero,amable,cortés,descortés,agresivo,pasivo,neutral,match
 1588230826298265600,FicoGutierrez,"Federico Gutiérrez hace un llamado desesperado al presidente Gustavo Petro ante devaluación del peso: “Esto no es un juego, piense en el país” ",2022-03-11,0.0006990247056819,0.0035817134194076,0.001833974616602,0.0020442984532564,0.0011616600677371,0.0101850824430584,0.9432254433631896,0.0219554118812084,0.0153134251013398,"['Gustavo', 'Petro']"
 1578109194187612160,FicoGutierrez,"Quienes aprueban la reforma tributaria del gobierno Petro, se convierten en responsables de generar desestímulo a la inversión y por ende menos empleos. 
 No estamos frente a un buen escenario económico y social. 

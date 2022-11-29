@@ -1,4 +1,4 @@
-id,user,text,date,bueno,malo,grosero,amable,cortes,descortés,agresivo,pasivo,neutral,match
+id,user,text,date,bueno,malo,grosero,amable,cortés,descortés,agresivo,pasivo,neutral,match
 1538552412700565506,petrogustavo,"Debemos llegar a encontranos. Al Gran Acuerdo Nacional que será el comienzo de la verdadera Paz.
 
 Mi solidaridad a Sergio Fajardo.",2022-06-19,0.0024629991967231,0.0022129463031888,0.0035162507556378,0.9041360020637512,0.0053580133244395,0.0388772040605545,0.0033357960637658,0.0059755099937319,0.0341252535581588,"['Sergio', 'Fajardo']"
