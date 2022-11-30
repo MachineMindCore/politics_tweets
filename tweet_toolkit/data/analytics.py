@@ -43,7 +43,7 @@ class FrecuencyPlot:
         ax.set_xlim(-1,len(acummulation.keys()))
         plt.grid()
         plt.xticks(rotation=-90)
-        plt.title(f"Palabras más usadas agrupadas {FrecuencyHandle.extract_users(data)}")
+        plt.title(f"Menciones entre candidatos {FrecuencyHandle.extract_users(data)}")
         plt.show()     
         return acummulation
 
@@ -218,6 +218,8 @@ class TimeLapsePlot:
             plt.step(dates, points[l,:])
             plt.legend(labels)
             plt.xticks(rotation = 90)
+        plt.title(f"Conteo de etiquetas agrupadas: {FrecuencyHandle.extract_labels(labels)} {FrecuencyHandle.extract_users(data)}")
+        
         plt.show()
         return 
 
