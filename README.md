@@ -1,7 +1,7 @@
 politics_tweets
 ==============================
 
-Analitics of colombian politician tweets.
+Analitics of colombian politician tweets. [TESIS](TESIS.pdf)
 
 Project Organization
 ------------
